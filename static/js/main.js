@@ -156,3 +156,27 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 });
+
+// --- Generic Share Functionality ---
+window.sharePage = async (url, title) => {
+  if (navigator.share) {
+    try {
+      await navigator.share({
+        title: title,
+        url: url,
+      });
+      console.log('Page shared successfully');
+    } catch (error) {
+      console.error('Error sharing page:', error);
+    }
+  } else {
+    // Fallback for browsers that do not support Web Share API
+    // Reuse the copy to clipboard logic
+    navigator.clipboard.writeText(url).then(() => {
+      alert('リンクをコピーしました！');
+    }).catch(err => {
+      console.error('Failed to copy URL: ', err);
+      alert('リンクのコピーに失敗しました。');
+    });
+  }
+};
