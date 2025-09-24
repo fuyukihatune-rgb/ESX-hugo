@@ -5,9 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ .Site.Title }}</title>
   <link rel="stylesheet" href="/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/fuse.js/dist/fuse.min.js"></script>
 </head>
 <body>
-  <div class="organization-name">Empowerment Social X</div>
+  <header class="site-header">
+    <h1><a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a></h1>
+    <nav class="site-nav">
+      <a href="/contribution-guide/">貢献ガイド</a>
+      <a href="/contribute/">記事を寄稿</a>
+      <button id="dark-mode-toggle" class="dark-mode-btn" aria-label="Toggle Dark Mode">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" class="moon-icon">
+          <path d="M6 .278a.768.768 0 0 1 .08.858 7.208 7.208 0 0 0-.878 3.46c0 4.021 3.278 7.277 7.318 7.277.527 0 1.04-.055 1.533-.16a.787.787 0 0 1 .81.316.733.733 0 0 1-.031.893A8.349 8.349 0 0 1 8.344 16C3.734 16 0 12.286 0 7.71 0 4.266 2.114 1.312 5.124.06A.752.752 0 0 1 6 .278z"/>
+        </svg>
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16" class="sun-icon" style="display: none;">
+          <path d="M8 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0zm0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13zm-5-5a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm10 0a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5zm-10-4.243a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 1 1-.707.707L3.05 3.05a.5.5 0 0 1-.707-.707zm10 8.486a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1-.707.707l-1.414-1.414a.5.5 0 0 1-.707.707zM3.05 12.95a.5.5 0 0 1 .707.707l1.414-1.414a.5.5 0 1 1-.707-.707L3.05 12.95z"/>
+        </svg>
+      </button>
+      <div class="search-form-container">
+        <input type="search" id="search-input" placeholder="検索...">
+        <div id="search-results" class="search-results-dropdown"></div>
+      </div>
+    </nav>
+  </header>
 
   <main class="container">
     <section class="hero">
@@ -55,36 +74,63 @@
     <section class="card">
       <h2>投稿一覧</h2>
       <ul class="post-list">
-        {{ range first 10 .Site.RegularPages.ByDate.Reverse }}
+        {{ range first 10 ((.Site.GetPage "section" "posts").RegularPages.ByDate.Reverse) }}
         <li>
-          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
-          <div class="meta">{{ .Date.Format "2006-01-02" }}</div>
+          <div class="post-item-card">
+            <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+            <div class="meta">
+              {{ .Date.Format "2006-01-02" }}
+              {{ $now := now }}
+              {{ $postDate := .Date }}
+              {{ $diff := $now.Sub $postDate }}
+              {{ $minutes := int ($diff.Minutes) }}
+              {{ $hours := int ($diff.Hours) }}
+              {{ $days := int (div $diff.Hours 24) }}
+
+              {{ if lt $minutes 1 }}
+                （たった今）
+              {{ else if lt $minutes 60 }}
+                （{{ $minutes }}分前）
+              {{ else if lt $hours 24 }}
+                （{{ $hours }}時間前）
+              {{ else if lt $days 30 }}
+                （{{ $days }}日前）
+              {{ end }}
+            </div>
+          </div>
         </li>
         {{ end }}
       </ul>
     </section>
 
     <section class="card">
-      <h2>支援（任意）</h2>
-      <p>本サイトは <strong>政治団体ではありません</strong>。活動は皆さまのご支援により成り立っています。</p>
+      <h2>ご支援のお願い（任意）</h2>
+      <p>
+        本サイトは特定の組織からの資金提供を受けず、個人の任意による寄付で運営されています。サーバーの維持や、自由でオープンなプラットフォームとしての活動を継続するために、皆様のご支援が大きな力になります。
+      </p>
+      <p>
+        もし私たちの理念や活動に共感いただけましたら、以下の方法でのご支援をご検討いただけますと幸いです。
+      </p>
       <p>代表: <strong>@ncc1030</strong></p>
       <div class="address-box">
         <label>Bitcoin (BTC)</label>
         <code class="addr">3LMiALLtbygKqzdHCgfgq8UmQVAsvmiPvN</code>
+        <button class="copy-btn" title="Copy to clipboard">コピー</button>
       </div>
       <div class="address-box">
-        <label>Ethereum (ETH)</label>
+        <label>Ethereum (ETH) / EVM互換チェーン</label>
         <code class="addr">0x30ADadB8551CF95267Eff67988916C11DF431bF2</code>
+        <button class="copy-btn" title="Copy to clipboard">コピー</button>
       </div>
     </section>
 
   </main>
 
-  
-
 
   <footer class="site-foot">
-    <div class="wrap">© {{ now.Year }} {{ .Site.Title }}</div>
-</footer>
+    <p class="footer-quote">「もし自由というものに何らかの意味があるとするなら、それは、人々が聞きたがらないことを告げる権利である。」</p>
+    <p>© {{ now.Year }} {{ .Site.Title }}<br><a href="/privacy-policy/">プライバシーポリシー</a></p>
+  </footer>
+  <script src="/js/main.js"></script>
 </body>
 </html>

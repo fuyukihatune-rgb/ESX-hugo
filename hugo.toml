@@ -1,3 +1,14 @@
 baseURL = 'https://example.org/'
 languageCode = 'ja'
 title = 'Empowerment Society X'
+
+[params]
+  web3forms_apikey = "$WEB3FORMS_APIKEY"
+
+[outputs]
+  home = ["HTML", "JSON"]
+
+[outputFormats.JSON]
+  baseName = "search"
+  isPlainText = true
+  mediaType = "application/json"

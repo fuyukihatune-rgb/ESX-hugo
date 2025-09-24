@@ -7,12 +7,25 @@
   <link rel="stylesheet" href="{{ "/style.css" | relURL }}">
 </head>
 <body>
-  <div class="organization-name">Empowerment Social X</div>
+  <header class="site-header">
+    <h1><a href="{{ .Site.BaseURL }}">{{ .Site.Title }}</a></h1>
+    <nav class="site-nav">
+      <a href="/contribution-guide/">貢献ガイド</a>
+      <a href="/contribute/">記事を寄稿</a>
+      <a href="#" class="search-btn" aria-label="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+          <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+        </svg>
+      </a>
+    </nav>
+  </header>
 
   <main class="container">
     <article class="card">
       <h1>{{ .Title }}</h1>
+      {{ if not .Date.IsZero }}
       <div class="meta">{{ .Date.Format "2006-01-02" }}</div>
+      {{ end }}
       <div class="content">
         {{ .Content }}
       </div>
@@ -20,7 +33,9 @@
   </main>
 
   <footer class="site-foot">
-    <div class="wrap">© {{ now.Year }} {{ .Site.Title }}</div>
+    <p class="footer-quote">「もし自由というものに何らかの意味があるとするなら、それは、人々が聞きたがらないことを告げる権利である。」</p>
+    <p>© {{ now.Year }} {{ .Site.Title }} | <a href="/privacy-policy/">プライバシーポリシー</a></p>
   </footer>
+  <script src="/js/main.js"></script>
 </body>
 </html>
