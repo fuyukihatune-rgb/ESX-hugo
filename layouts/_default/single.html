@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ .Title }} - {{ .Site.Title }}</title>
+  <link rel="stylesheet" href="{{ "/style.css" | relURL }}">
+</head>
+<body>
+  <div class="organization-name">Empowerment Social X</div>
+
+  <main class="container">
+    <article class="card">
+      <h1>{{ .Title }}</h1>
+      <div class="meta">{{ .Date.Format "2006-01-02" }}</div>
+      <div class="content">
+        {{ .Content }}
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-foot">
+    <div class="wrap">© {{ now.Year }} {{ .Site.Title }}</div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,19 @@
+# Hugo
+/public/
+/resources/_gen/
+.hugo_build.lock
+/data/
+/tmp/
+/temp/
+
+# macOS
+.DS_Store
+
+# Logs
+*.log
+
+# Editor-specific files
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
