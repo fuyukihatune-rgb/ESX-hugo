@@ -1,0 +1,12 @@
+{{/*
+  基本的な1カラムレイアウト用の部品。
+  記事以外のページ（貢献ガイドなど）で使われる。
+*/}}
+<div class="container">
+  <div class="card">
+    <header class="article-header">
+      <h1>{{ .Title }}</h1>
+    </header>
+    <div class="content">{{ .Content }}</div>
+  </div>
+</div>

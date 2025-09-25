@@ -1,0 +1,11 @@
+{{/*
+  記事カード表示用の部品。
+  ホームページや記事一覧ページから呼び出して使う。
+*/}}
+<a href="{{ .RelPermalink }}" class="post-card">
+  <article>
+    <h3>{{ .Title }}</h3>
+    <p>{{ .Summary | truncate 70 }}</p>
+    <div class="post-meta"><time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006-01-02" }}</time></div>
+  </article>
+</a>

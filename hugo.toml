@@ -1,12 +1,17 @@
-baseURL = 'https://example.org/'
+baseURL = '/'
 languageCode = 'ja'
 title = 'Empowerment Society X'
 
 [params]
-  web3forms_apikey = "$WEB3FORMS_APIKEY"
+  web3forms_apikey = "5fdc700f-cbac-4b9a-94b6-574db65a1da9"
+  contribute_form_action = "https://esx-form-handler.eitaro1694.workers.dev/"
+  contribute_max_bytes = 10485760
 
 [outputs]
   home = ["HTML", "JSON"]
+  section = ["HTML", "RSS"]
+
+
 
 [outputFormats.JSON]
   baseName = "search"

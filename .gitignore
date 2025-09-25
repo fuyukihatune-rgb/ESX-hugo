@@ -6,6 +6,9 @@
 /tmp/
 /temp/
 
+# Backups & local config
+*.bak*
+
 # macOS
 .DS_Store
 

@@ -1,0 +1,30 @@
+{{/*
+  記事ページ用の2カラムレイアウト部品。
+  layouts/_default/single.html から呼び出される。
+*/}}
+<div class="article-layout">
+  <article class="article-content">
+    <header class="article-header">
+      <h1>{{ .Title }}</h1>
+      <div class="article-meta">
+        {{ if not .Date.IsZero }}
+        <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006年1月2日" }}</time>
+        {{ end }}
+        <span>&middot;</span>
+        <span>約{{ .ReadingTime }}分で読めます</span>
+      </div>
+    </header>
+    <div class="content">
+      {{ .Content }}
+    </div>
+
+    {{ partial "share-buttons.html" . }}
+  </article>
+
+  <aside class="article-sidebar">
+    <div class="toc-wrapper">
+      <h5>目次</h5>
+      {{ .TableOfContents }}
+    </div>
+  </aside>
+</div>

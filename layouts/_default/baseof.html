@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.LanguageCode | default "ja" }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  {{/* ページごとのタイトルを設定 */}}
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}</title>
+
+  {{/* ページごとの追加<head>要素を読み込むためのブロック */}}
+  {{ block "head" . }}{{ end }}
+
+  <link rel="stylesheet" href="{{ "style.css" | relURL }}">
+
+</head>
+<body>
+  {{/* 共通ヘッダーを読み込む */}}
+  {{ partial "header.html" . }}
+
+  <main>
+    {{/* 各ページ固有のコンテンツがここに挿入される */}}
+    {{ block "main" . }}{{ end }}
+  </main>
+
+  {{/* 共通フッターを読み込む */}}
+  {{ partial "footer.html" . }}
+
+  <script src="{{ "js/main.js" | relURL }}" defer></script>
+</body>
+</html>

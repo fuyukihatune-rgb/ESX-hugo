@@ -49,71 +49,71 @@ document.addEventListener('DOMContentLoaded', () => {
     console.warn('Dark mode toggle button not found.');
   }
 
-  // --- Search Form Functionality --- 
-  const searchInput = document.getElementById('search-input');
-  const searchResults = document.getElementById('search-results');
-  let fuse;
+  // --- Search Form Functionality (Active only on /posts/ page) --- 
+  if (window.location.pathname === '/posts' || window.location.pathname === '/posts/') {
+    const searchInput = document.getElementById('search-input');
+    const postGrid = document.querySelector('.post-card-grid');
+    const searchResultsContainer = document.getElementById('search-results-container');
+    const pagination = document.querySelector('.pagination');
+    let fuse;
 
-  fetch('/search.json')
-    .then(response => response.json())
-    .then(data => {
-      const options = {
-        keys: ['title', 'content', 'tags'],
-        includeScore: true,
-        threshold: 0.4,
-        minMatchCharLength: 2,
-      };
-      fuse = new Fuse(data, options);
-    })
-    .catch(error => console.error('Error fetching search index:', error));
+    fetch('/search.json')
+      .then(response => response.json())
+      .then(data => {
+        const options = {
+          keys: ['title', 'content', 'tags'],
+          includeScore: true,
+          threshold: 0.4,
+          minMatchCharLength: 2,
+        };
+        fuse = new Fuse(data, options);
+      })
+      .catch(error => console.error('Error fetching search index:', error));
 
-  if (searchInput && searchResults) {
-    searchInput.addEventListener('input', () => {
-      const query = searchInput.value;
-      if (query.length < 2) {
-        searchResults.innerHTML = '';
-        searchResults.style.display = 'none'; // Hide dropdown if query is too short
-        return;
-      }
+    if (searchInput && postGrid && searchResultsContainer) {
+      searchInput.addEventListener('input', () => {
+        const query = searchInput.value;
+        if (query.length < 2) {
+          searchResultsContainer.innerHTML = '';
+          searchResultsContainer.style.display = 'none'; 
+          postGrid.style.display = 'grid';
+          if (pagination) pagination.style.display = 'flex';
+          return;
+        }
 
-      if (fuse) { // Ensure fuse is initialized
-        const results = fuse.search(query);
-        displayResults(results);
-      }
-    });
-
-    // Hide search results when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!searchResults.contains(e.target) && e.target !== searchInput) {
-        searchResults.style.display = 'none';
-      }
-    });
-
-    // Show search results when input is focused and has content
-    searchInput.addEventListener('focus', () => {
-      if (searchInput.value.length >= 2 && searchResults.innerHTML !== '') {
-        searchResults.style.display = 'block';
-      }
-    });
-  }
-
-  function displayResults(results) {
-    searchResults.innerHTML = '';
-    if (results.length > 0) {
-      const resultList = document.createElement('ul');
-      results.slice(0, 10).forEach(result => {
-        const item = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = result.item.permalink;
-        link.textContent = result.item.title;
-        item.appendChild(link);
-        resultList.appendChild(item);
+        if (fuse) {
+          const results = fuse.search(query);
+          displayResults(results);
+          postGrid.style.display = 'none'; 
+          if (pagination) pagination.style.display = 'none';
+          searchResultsContainer.style.display = 'grid';
+        }
       });
-      searchResults.appendChild(resultList);
-      searchResults.style.display = 'block'; // Show dropdown
-    } else {
-      searchResults.innerHTML = '<p>一致する結果はありませんでした。</p>';
-      searchResults.style.display = 'block'; // Show dropdown even if no results
+    }
+
+    function displayResults(results) {
+      searchResultsContainer.innerHTML = '';
+      if (results.length > 0) {
+        results.slice(0, 10).forEach(result => {
+          const post = result.item;
+          const cardHTML = `
+            <a href="${post.permalink}" class="post-card">
+              <article>
+                <h3>${post.title}</h3>
+                <p>${post.summary.substring(0, 100)}</p>
+                <div class="post-meta">
+                  <time datetime="${post.date}">${new Date(post.date).toLocaleDateString('ja-JP')}</time>
+                  <span>&middot;</span>
+                  <span>約${post.readingTime}分</span>
+                </div>
+              </article>
+            </a>
+          `;
+          searchResultsContainer.innerHTML += cardHTML;
+        });
+      } else {
+        searchResultsContainer.innerHTML = '<p class="no-results">一致する記事はありませんでした。</p>';
+      }
     }
   }
 
@@ -155,6 +155,97 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+
+  // --- Contribution Form Validation ---
+  document.querySelectorAll('form.contact-form').forEach(form => {
+    const fileInput = form.querySelector('input[type="file"]');
+    if (!fileInput) {
+      return;
+    }
+
+    const errorEl = form.querySelector('[data-role="file-error"]');
+    const allowedExt = (form.dataset.allowedExt || '').split(',').map(ext => ext.trim().toLowerCase()).filter(Boolean);
+    const maxSize = parseInt(form.dataset.maxSize || '0', 10);
+
+    const formatBytes = bytes => {
+      if (!bytes) return '';
+      if (bytes < 1024) return `${bytes}B`;
+      if (bytes < 1024 * 1024) return `${Math.round(bytes / 1024)}KB`;
+      return `${Math.round((bytes / (1024 * 1024)) * 10) / 10}MB`;
+    };
+
+    const showError = message => {
+      if (errorEl) {
+        errorEl.textContent = message;
+        errorEl.hidden = false;
+      } else {
+        alert(message);
+      }
+    };
+
+    const clearError = () => {
+      if (errorEl) {
+        errorEl.textContent = '';
+        errorEl.hidden = true;
+      }
+    };
+
+    const validateFile = file => {
+      if (!file) {
+        showError('ファイルを選択してください。');
+        return false;
+      }
+
+      const extension = file.name.split('.').pop().toLowerCase();
+      if (allowedExt.length && !allowedExt.includes(extension)) {
+        showError(`対応していないファイル形式です。利用可能: .${allowedExt.join(', .')}`);
+        return false;
+      }
+
+      if (maxSize > 0 && file.size > maxSize) {
+        showError(`ファイルサイズは ${formatBytes(maxSize)} 以内にしてください。現在: ${formatBytes(file.size)}`);
+        return false;
+      }
+
+      clearError();
+      return true;
+    };
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files && fileInput.files[0]) {
+        validateFile(fileInput.files[0]);
+      } else {
+        clearError();
+      }
+    });
+
+    form.addEventListener('submit', event => {
+      const file = fileInput.files && fileInput.files[0];
+      if (!validateFile(file)) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    });
+  });
+
+  // --- Hamburger Menu Functionality --- 
+  const hamburgerMenu = document.querySelector('.hamburger-menu');
+  const navLinks = document.querySelector('.nav-links');
+
+  if (hamburgerMenu && navLinks) {
+    hamburgerMenu.addEventListener('click', () => {
+      hamburgerMenu.classList.toggle('active');
+      navLinks.classList.toggle('active');
+    });
+
+    // Close menu when a link is clicked (optional, but good for UX)
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        hamburgerMenu.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
+  }
 });
 
 // --- Generic Share Functionality ---

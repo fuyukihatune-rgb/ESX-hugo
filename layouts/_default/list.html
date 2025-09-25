@@ -1,0 +1,30 @@
+{{ define "main" }}
+  <div class="container">
+    <header class="list-header">
+      {{/* .Data.Singular は "post" や "tag" などを返す */}}
+      <h1 class="list-title">{{ .Title }}</h1>
+      {{ with .Content }}
+        <div class="list-content">
+          {{ . }}
+        </div>
+      {{ end }}
+    </header>
+
+    {{/* 検索フォームを配置 */}}
+    {{ if eq .Section "posts" }}
+      <div class="search-form-container">
+        <input type="search" id="search-input" class="search-input" placeholder="記事を検索...">
+      </div>
+      <div id="search-results-container" class="post-card-grid"></div>
+    {{ end }}
+
+    <div id="post-list" class="post-card-grid">
+      {{ range .Paginator.Pages }}
+        {{ partial "card.html" . }}
+      {{ end }}
+    </div>
+
+    {{/* ページネーションのUIを読み込む */}}
+    {{ partial "pagination.html" . }}
+  </div>
+{{ end }}

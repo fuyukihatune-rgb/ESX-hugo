@@ -1,537 +1,528 @@
-/* General Body Styles */
+/* === テーマ: クリスタル・ダーク (2025) === */
+:root {
+  --bg-color: #0d1117;
+  --card-bg-color: rgba(30, 36, 46, 0.6);
+  --text-color: #c9d1d9;
+  --heading-color: #f0f6fc;
+  --accent-grad: linear-gradient(90deg, #3081f7, #9b59b6);
+  --accent-color-start: #3081f7;
+  --border-color: rgba(139, 148, 158, 0.3);
+  --quote-color: #8b949e;
+  --code-bg-color: rgba(13, 17, 23, 0.8);
+}
+
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    line-height: 1.7;
-    color: #333;
-    background-color: #f8f9fa; /* Modern off-white background */
-    margin: 0;
-    padding: 0; /* Remove body padding */
-    font-size: 1.1em; /* Slightly larger base font size */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Hiragino Sans", "Noto Sans CJK JP", "Helvetica Neue", Arial, sans-serif;
+  margin: 0;
+  color: var(--text-color);
+  background-color: var(--bg-color);
+  line-height: 1.7;
+  /* --- Sticky Footerのための設定 --- */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-size: 16px;
+  overflow-x: hidden;
+  position: relative;
 }
 
-/* Container for centering content */
+/* オーロラ背景エフェクト */
+body::before {
+  content: '';
+  position: fixed;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 20% 20%, rgba(53, 129, 247, 0.15), transparent 30%),
+              radial-gradient(circle at 80% 70%, rgba(155, 89, 182, 0.15), transparent 30%);
+  animation: aurora 20s linear infinite;
+  z-index: -1;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--heading-color);
+  line-height: 1.3;
+}
+
+a {
+  color: var(--accent-color-start);
+  text-decoration: none;
+  transition: color 0.2s ease-in-out;
+}
+
+a:hover {
+  text-decoration: underline;
+  filter: brightness(1.2);
+}
+
+/* === レイアウト === */
 .container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 40px 20px; /* Add vertical padding */
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
 }
 
-/* Header Styles */
+/* --- Sticky Footerのための設定 --- */
+main {
+  flex-grow: 1;
+}
+
+/* === ヘッダー & フッター === */
 .site-header {
-    background-color: #ffffff;
-    padding: 25px 0; /* Increased padding */
-    text-align: center;
-    border-bottom: 1px solid #e0e0e0;
-    position: sticky; /* Make header sticky */
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05); /* Add a subtle shadow */
+  background-color: rgba(13, 17, 23, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border-color);
+  padding: 1rem 0;
 }
-
+.site-header .container,
+.site-foot .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
 .site-header h1 {
-    font-size: 3em; /* Even larger site title */
-    margin: 0;
-    line-height: 1.1; /* Tighter line height */
+  margin: 0;
+  font-size: 1.5rem;
 }
-
 .site-header h1 a {
-    text-decoration: none;
-    color: #222; /* Darker link color */
+  color: var(--heading-color);
+  text-decoration: none;
 }
 
-.site-header h1 a:hover {
-    color: #007bff; /* Highlight on hover */
-}
-
-.site-nav {
-    margin-top: 15px;
-}
-
-.site-nav a {
-    color: #007bff;
-    text-decoration: none;
-    font-size: 1.1em;
-    margin: 0 10px;
-    padding: 5px 10px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
-}
-
-.site-nav a:hover {
-    background-color: #e9ecef;
-    color: #0056b3;
-}
-
-
-/* Hero Section H1 */
-main .hero h1 {
-    font-size: 2.5em; /* Make hero H1 prominent but not as large as site title */
-    color: #0056b3; /* A strong blue */
-    margin-top: 0;
-    margin-bottom: 20px;
-    line-height: 1.3;
-}
-
-/* General H2 styles */
-h2 {
-    font-size: 2.2em; /* Slightly larger H2 */
-    margin-top: 40px;
-    margin-bottom: 20px;
-    color: #222;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-}
-
-/* Card and Hero section padding */
-.card, .hero {
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 30px; /* Increased padding */
-    margin-bottom: 30px; /* Increased margin */
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-/* Adjustments for article h2 to avoid conflict with general h2 */
-article h2 {
-    font-size: 2em; /* Keep article h2 slightly smaller than general h2 */
-    margin-top: 0; /* Reset margin-top for article h2 */
-    border-bottom: none; /* Remove border for article h2 */
-    padding-bottom: 0; /* Remove padding for article h2 */
-}
-
-/* Post List Styles */
-.post-list {
-    list-style: none;
-    padding: 0;
-}
-
-.post-item-card {
-    padding: 20px;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    transition: box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.post-item-card:hover {
-    border-color: #007bff;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-}
-
-.post-item-card a {
-    text-decoration: none;
-    color: #222;
-    font-size: 1.4em;
-    font-weight: bold;
-    display: block;
-    margin-bottom: 5px;
-}
-
-.post-item-card a:hover {
-    color: #007bff;
-}
-
-.post-item-card .meta {
-    font-size: 0.9em;
-    color: #666;
-}
-
-
-/* Footer Styles */
 .site-foot {
-    background-color: #212529; /* Dark background */
-    color: #ced4da; /* Lighter text */
-    text-align: center;
-    margin-top: 50px;
-    padding: 40px 0;
-    border-top: 1px solid #495057;
+  margin-top: 3rem;
+  padding: 2rem 0;
+  font-size: 0.9rem;
+  color: var(--quote-color);
 }
-
+.site-foot .container {
+  text-align: center;
+  display: block;
+  border-top: 1px solid var(--border-color);
+  padding-top: 2rem;
+}
 .footer-quote {
-    font-style: italic;
-    font-size: 0.9em;
-    margin: 0 auto 15px auto;
-    max-width: 600px; /* To prevent it from being too wide on large screens */
-    color: #adb5bd; /* Slightly muted text for quote */
+  font-style: italic;
+  margin-bottom: 1rem;
 }
 
-.site-foot a {
-    color: #80bdff; /* A light blue that works on dark backgrounds */
-    text-decoration: none;
+/* === カードスタイル === */
+.card {
+  background-color: var(--card-bg-color);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem 2rem;
+  margin-bottom: 2rem;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+.card:hover, .post-card:hover {
+  background-color: rgba(45, 55, 72, 0.7);
+  box-shadow: 0 0 20px rgba(53, 129, 247, 0.2);
+}
+.card .meta {
+  margin: 1rem 0 1.5rem;
+  color: var(--quote-color);
+  font-size: 0.9rem;
 }
 
-.site-foot a:hover {
-    text-decoration: underline;
+/* === 記事ページレイアウト (single.html) === */
+.article-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
 }
 
-/* Button Styles */
-.btn {
-    display: inline-block;
-    font-weight: 400;
-    color: #ffffff;
-    text-align: center;
-    vertical-align: middle;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    background-color: #007bff;
-    border: 1px solid #007bff;
-    padding: 10px 15px;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 0.25rem;
-    transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+@media (min-width: 1024px) {
+  .article-layout {
+    grid-template-columns: minmax(0, 3fr) 1fr;
+  }
 }
 
-.btn:hover {
-    color: #ffffff;
-    background-color: #0069d9;
-    border-color: #0062cc;
+.article-content {
+  background-color: var(--card-bg-color);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 2rem 2.5rem;
 }
 
-.btn:focus, .btn.focus {
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+.article-header {
+  margin-bottom: 2.5rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 1.5rem;
+}
+.article-header h1 {
+  margin: 0 0 1rem;
+  font-size: 2.5rem;
+}
+.article-meta {
+  color: var(--quote-color);
+  font-size: 0.9rem;
+}
+.article-meta span {
+  margin: 0 0.5rem;
 }
 
-/* Address Box Styles */
-.address-box {
-    background-color: #212529; /* Dark background */
-    color: #f8f9fa; /* Light text */
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 15px;
-    font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    position: relative; /* For positioning the copy button */
-    border: 1px solid #495057;
+.article-sidebar {
+  position: relative;
+}
+.toc-wrapper {
+  position: sticky;
+  top: 80px; /* ヘッダーの高さ + α */
+  max-height: calc(100vh - 100px);
+  overflow-y: auto;
+  padding-right: 1rem;
+}
+.toc-wrapper h5 {
+  margin: 0 0 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--heading-color);
+}
+.toc-wrapper nav ul {
+  list-style: none;
+  padding-left: 0;
+}
+.toc-wrapper nav > ul {
+  padding-left: 0;
+  border-left: 2px solid var(--border-color);
+}
+.toc-wrapper nav ul li {
+  margin: 0.5rem 0;
+}
+.toc-wrapper nav ul li a {
+  display: block;
+  padding-left: 1rem;
+  color: var(--quote-color);
+  text-decoration: none;
+  border-left: 2px solid transparent;
+  margin-left: -2px;
+  transition: all 0.2s;
+}
+.toc-wrapper nav ul li a:hover {
+  color: var(--heading-color);
+}
+.toc-wrapper nav ul li.active > a {
+  color: var(--accent-color-start);
+  border-left-color: var(--accent-color-start);
+  transform: translateX(3px);
 }
 
-.address-box label {
-    display: block;
-    font-weight: bold;
-    color: #00e676; /* Green label, like a prompt */
-    margin-bottom: 10px;
+/* === 記事一覧ページ (list.html) === */
+.list-header {
+  margin-bottom: 3rem;
+}
+.list-header .list-title {
+  font-size: 2.5rem;
+  text-align: center;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
-.address-box .addr {
-    word-wrap: break-word; /* Break long addresses */
-    word-break: break-all; /* Force break for long strings */
-    color: #ced4da;
-    padding-right: 60px; /* Make space for the button */
-}
 
-.copy-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background-color: #495057;
-    color: #ced4da;
-    border: 1px solid #6c757d;
-    border-radius: 5px;
-    padding: 5px 10px;
-    cursor: pointer;
-    font-size: 0.8em;
-    transition: background-color 0.2s;
-}
 
-.copy-btn:hover {
-    background-color: #6c757d;
-    color: #ffffff;
+/* === トップページ特有のスタイル === */
+.site-title-wrapper {
+  text-align: center;
+  margin: 2rem 0 3rem;
 }
-
-/* Form Styles */
-.form-group {
-    margin-bottom: 1.5rem;
+.site-title-wrapper .site-title {
+  font-size: 3rem;
+  font-weight: 700;
+  background: var(--accent-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
-
-.form-label {
-    display: inline-block;
-    margin-bottom: 0.5rem;
-    font-weight: bold;
+.list-header .list-content {
+  text-align: center;
 }
-
-.form-control {
-    display: block;
-    width: 100%;
-    padding: 10px 15px;
-    font-size: 1rem;
-    line-height: 1.5;
-    color: #495057;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #ced4da;
-    border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-}
-
-.form-control:focus {
-    color: #495057;
-    background-color: #fff;
-    border-color: #80bdff;
-    outline: 0;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-}
-
-.form-control-file {
-    display: block;
-    width: 100%;
-}
-
-/* Code Block Styles */
-pre, code {
-  overflow-x: auto; /* Add horizontal scroll for long code */
-  white-space: pre-wrap; /* Wrap long lines */
-  word-wrap: break-word; /* Break words */
-}
-
-/* Search Form Container */
 .search-form-container {
-    position: relative;
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 15px;
+  max-width: 420px;
+  margin: 0 auto 2rem;
+}
+.search-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  font-family: inherit;
+  color: var(--text-color);
+  background-color: var(--code-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent-color-start);
+  box-shadow: 0 0 0 3px rgba(48, 129, 247, 0.3);
+}
+.hero h1 {
+  font-size: 2.2rem;
+  text-align: center;
+}
+.hero .lead {
+  font-size: 1.2rem;
+  text-align: center;
+  color: var(--quote-color);
+}
+.latest-posts {
+  padding-top: 2rem;
+  padding-bottom: 2rem;
+}
+.post-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;  
+  margin-top: 1.5rem;
+}
+.post-card {
+  display: block;
+  background-color: var(--card-bg-color);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 1.5rem;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+.post-card h3 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  color: var(--heading-color);
+}
+.post-card p {
+  margin: 0 0 1rem;
+  font-size: 0.9rem;
+}
+.post-card .post-meta {
+  font-size: 0.9rem;
+  color: var(--quote-color);
+}
+.no-results {
+  grid-column: 1 / -1; /* グリッドの全幅を占める */
+  text-align: center;
+  padding: 2rem;
 }
 
-/* Search Input Field */
-.search-form-container #search-input {
-    width: 200px; /* Adjust as needed */
-    padding: 8px 12px;
-    border: 1px solid #ced4da;
-    border-radius: 5px;
-    font-size: 1em;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+/* === 引用 & コード === */
+.quote, blockquote {
+  margin: 2rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 4px solid var(--accent-color-start);
+  background-color: var(--code-bg-color);
+  color: var(--quote-color);
+  border-radius: 0 4px 4px 0;
+}
+.quote cite, blockquote cite {
+  display: block;
+  text-align: right;
+  margin-top: 0.5rem;
+  font-style: normal;
+  font-size: 0.9em;
 }
 
-.search-form-container #search-input:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    outline: none;
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 3rem;
+  padding: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+.pagination-item {
+  color: var(--text-color);
+  font-weight: 500;
+}
+.pagination-item.disabled {
+  color: var(--quote-color);
+  pointer-events: none;
+  opacity: 0.6;
+}
+.page-number {
+  color: var(--quote-color);
+  font-size: 0.9rem;
 }
 
-/* Search Results Dropdown */
-.search-results-dropdown {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    width: 100%;
-    max-height: 300px;
-    overflow-y: auto;
-    background-color: #fff;
-    border: 1px solid #e0e0e0;
-    border-radius: 5px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    z-index: 100;
-    display: none; /* Hidden by default */
+
+
+.contact-form {
+  margin-top: 2rem;
 }
 
-.search-results-dropdown ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.form-group {
+  margin-bottom: 1.5rem;
 }
 
-.search-results-dropdown li a {
-    display: block;
-    padding: 10px 12px;
-    color: #333;
-    text-decoration: none;
-    transition: background-color 0.2s;
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: var(--heading-color);
 }
 
-.search-results-dropdown li a:hover {
-    background-color: #e9ecef;
-    color: #0056b3;
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background-color: var(--code-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-color);
+  font-size: 1rem;
+  font-family: inherit;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.search-results-dropdown p {
-    padding: 10px 12px;
-    color: #666;
-    text-align: center;
+.form-group input[type="text"]:focus,
+.form-group input[type="email"]:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: var(--accent-color-start);
+  box-shadow: 0 0 0 3px rgba(48, 129, 247, 0.3);
 }
 
-/* Dark Mode for Search Form */
-body.dark-mode .search-form-container #search-input {
-    background-color: #333;
-    color: #e0e0e0;
-    border-color: #555;
+.btn-submit {
+  display: inline-block;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent-grad);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: transform 0.2s, filter 0.2s;
 }
 
-body.dark-mode .search-form-container #search-input:focus {
-    border-color: #bb86fc;
-    box-shadow: 0 0 0 0.2rem rgba(187, 134, 252, 0.25);
+.btn-submit:hover {
+  filter: brightness(1.1);
+  transform: translateY(-2px);
+  text-decoration: none;
+}
+.form-group input[type="file"] {
+  background-color: transparent;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  width: 100%;
+}
+.form-note {
+  margin: 0.25rem 0 0.75rem;
+  font-size: 0.9rem;
+  color: var(--quote-color);
+}
+.form-error {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #ff7b7b;
+}
+.form-group input[type="file"]::file-selector-button {
+  background: var(--accent-grad);
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  padding: 0.5rem 1rem;
+  margin-right: 1rem;
+  cursor: pointer;
 }
 
-body.dark-mode .search-results-dropdown {
-    background-color: #1e1e1e;
-    border-color: #333;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+
+.address-box {
+  background-color: var(--code-bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+.address-box label {
+  display: block;
+  font-weight: bold;
+  color: var(--heading-color);
+  margin-bottom: 0.5rem;
+}
+.address-box .addr {
+  font-family: monospace;
+  word-break: break-all;
+  color: var(--text-color);
 }
 
-body.dark-mode .search-results-dropdown li a {
-    color: #e0e0e0;
+/* === ナビゲーション (ハンバーガーメニュー含む) === */
+.site-nav a {
+  margin-left: 1.5rem;
+  color: var(--text-color);
+  font-weight: 500;
+}
+.hamburger-menu {
+  display: none; /* PCでは非表示 */
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
 }
 
-body.dark-mode .search-results-dropdown li a:hover {
-    background-color: #333;
-    color: #bb86fc;
-}
-
-body.dark-mode .search-results-dropdown p {
-    color: #ccc;
-}
-
-/* Responsive adjustments for smaller screens */
+/* レスポンシブ対応 */
 @media (max-width: 768px) {
-    body {
-        font-size: 1em; /* Adjust base font size for mobile */
-    }
-
-    .container {
-        padding: 20px 25px; /* Adjust padding on mobile */
-    }
-
-    .site-header h1 {
-        font-size: 2.0em; /* Reduce header font size further */
-    }
-
-    main .hero h1 {
-        font-size: 2em; /* Reduce hero font size */
-        color: #0056b3; /* Keep hero h1 color blue on mobile */
-    }
-
-    h2 {
-        font-size: 1.8em; /* Reduce h2 font size */
-    }
-
-    .card, .hero {
-        padding: 20px; /* Reduce card padding */
-    }
-
-    .address-box {
-        padding: 15px;
-    }
-
-    .address-box .addr {
-        padding-right: 50px; /* Adjust space for copy button */
-    }
-
-    .copy-btn {
-        top: 10px;
-        right: 10px;
-        padding: 4px 8px;
-    }
+  .site-nav .nav-links {
+    display: none;
+    position: absolute;
+    top: 70px; /* ヘッダーの高さに合わせて調整 */
+    right: 0;
+    background-color: var(--card-bg-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    width: 200px;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  }
+  .site-nav .nav-links.active {
+    display: block;
+  }
+  .site-nav .nav-links a {
+    display: block;
+    margin: 0.5rem 0;
+  }
+  .hamburger-menu {
+    display: block; /* SPで表示 */
+  }
+  .hamburger-icon {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background-color: var(--text-color);
+    position: relative;
+  }
+  .hamburger-icon::before,
+  .hamburger-icon::after {
+    content: '';
+    position: absolute;
+    width: 24px;
+    height: 2px;
+    background-color: var(--text-color);
+    left: 0;
+  }
+  .hamburger-icon::before { top: -8px; }
+  .hamburger-icon::after { bottom: -8px; }
 }
 
-/* Dark Mode Toggle Button */
-.dark-mode-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #6c757d;
-    display: inline-block;
-    vertical-align: middle;
-    margin-left: 10px;
-    padding: 5px;
-}
-.dark-mode-btn:hover {
-    color: #007bff;
-    background-color: transparent;
-}
-
-/* Dark Mode Styles */
-body.dark-mode {
-    background-color: #121212;
-    color: #e0e0e0;
-}
-
-body.dark-mode .site-header {
-    background-color: #1e1e1e;
-    border-bottom-color: #333;
-}
-
-body.dark-mode .site-header h1 a {
-    color: #e0e0e0;
-}
-
-body.dark-mode .site-header h1 a:hover,
-body.dark-mode .site-nav a:hover,
-body.dark-mode .dark-mode-btn:hover {
-    color: #bb86fc; /* A typical dark mode accent color */
-}
-
-body.dark-mode .site-nav a {
-    color: #bb86fc;
-}
-
-body.dark-mode .card, 
-body.dark-mode .hero {
-    background-color: #1e1e1e;
-    border-color: #333;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.5);
-}
-
-body.dark-mode h2 {
-    color: #e0e0e0;
-    border-bottom-color: #333;
-}
-
-body.dark-mode main .hero h1 {
-    color: #bb86fc;
-}
-
-body.dark-mode .post-item-card {
-    background-color: #1e1e1e;
-    border-color: #333;
-}
-
-body.dark-mode .post-item-card:hover {
-    border-color: #bb86fc;
-}
-
-body.dark-mode .post-item-card a {
-    color: #e0e0e0;
-}
-
-body.dark-mode .post-item-card a:hover {
-    color: #bb86fc;
-}
-
-body.dark-mode .address-box {
-    background-color: #1e1e1e;
-    border-color: #444;
-}
-
-body.dark-mode .address-box label {
-    color: #03dac6;
-}
-
-body.dark-mode .address-box .addr {
-    color: #e0e0e0;
-}
-
-body.dark-mode .copy-btn {
-    background-color: #333;
-    color: #e0e0e0;
-    border-color: #555;
-}
-
-body.dark-mode .copy-btn:hover {
-    background-color: #444;
-}
-
-body.dark-mode .form-control {
-    background-color: #333;
-    color: #e0e0e0;
-    border-color: #555;
-}
-
-body.dark-mode .form-control:focus {
-    border-color: #bb86fc;
-    box-shadow: 0 0 0 0.2rem rgba(187, 134, 252, 0.25);
-}
-
-body.dark-mode .dark-mode-btn {
-    color: #e0e0e0;
+/* アニメーション */
+@keyframes aurora {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
