@@ -4,46 +4,91 @@
       <h1 class="site-title">Empowerment Society X</h1>
     </div>
 
+    {{ $discussionsURL := .Site.Params.discussions_url | default "https://github.com/fuyukihatune-rgb/ESX-hugo/discussions" }}
     <section class="hero">
-      <h1>守るための言論を、ここから。</h1>
+      <h1>自由で開かれたディスカッションハブへ。</h1>
       <p class="lead">
-        多様な意見が安全に交わる場を広げるために――理性・透明性・合法性を大切に、
-        小さな声と尊厳を守ります。
+        Empowerment Society X は、肩書きや立場に関係なくアイデアを共有できるオンラインフォーラムです。
+        テーマの大小を問わず、読みやすいコンテンツと健全なコミュニケーションを歓迎します。
       </p>
       <blockquote class="quote">
-        <p>「たとえ一人の人間の意見でも、それを黙殺することは、全人類から意見を奪うことと同じである。」</p>
-        <cite>— J.S. Mill『自由論』</cite>
+        <p>「誰もが安心して話せる場所を整えることが、創造的な対話の前提条件である。」</p>
+        <cite>— Community Charter</cite>
       </blockquote>
+      <div class="hero-actions">
+        <a class="cta-button" href="{{ relLangURL "contribute/" }}">寄稿フォームを開く</a>
+        <a class="cta-button secondary" href="{{ $discussionsURL }}" target="_blank" rel="noopener">GitHub Discussions で話す</a>
+      </div>
     </section>
 
+    {{ $categorySlice := slice }}
+    {{ range $name, $taxonomy := .Site.Taxonomies.categories }}
+      {{ $page := site.GetPage (printf "/categories/%s" (urlize $name)) }}
+      {{ if $page }}
+        {{ $categorySlice = $categorySlice | append (dict "name" $name "count" (len $taxonomy) "permalink" $page.RelPermalink) }}
+      {{ end }}
+    {{ end }}
+
+    {{ $tagSlice := slice }}
+    {{ range $name, $taxonomy := .Site.Taxonomies.tags }}
+      {{ $page := site.GetPage (printf "/tags/%s" (urlize $name)) }}
+      {{ if $page }}
+        {{ $tagSlice = $tagSlice | append (dict "name" $name "count" (len $taxonomy) "permalink" $page.RelPermalink) }}
+      {{ end }}
+    {{ end }}
+
+    {{ if or (gt (len $categorySlice) 0) (gt (len $tagSlice) 0) }}
+    <section class="card taxonomy-card">
+      <div class="taxonomy-columns">
+        {{ if gt (len $categorySlice) 0 }}
+        <div class="taxonomy-block">
+          <h2>トピック一覧</h2>
+          <p class="taxonomy-text">気になるテーマを選んで、関連する投稿を一覧できます。</p>
+          <div class="pill-group">
+            {{ range first 6 (sort $categorySlice "count" "desc") }}
+              <a class="pill" href="{{ .permalink }}">{{ .name }}<span class="pill-count">{{ .count }}</span></a>
+            {{ end }}
+          </div>
+        </div>
+        {{ end }}
+        {{ if gt (len $tagSlice) 0 }}
+        <div class="taxonomy-block">
+          <h2>人気タグ</h2>
+          <p class="taxonomy-text">関心のあるキーワードから投稿を探しましょう。</p>
+          <div class="pill-group">
+            {{ range first 8 (sort $tagSlice "count" "desc") }}
+              <a class="pill secondary" href="{{ .permalink }}">#{{ .name }}<span class="pill-count">{{ .count }}</span></a>
+            {{ end }}
+          </div>
+        </div>
+        {{ end }}
+      </div>
+    </section>
+    {{ end }}
+
     <section class="card">
-      <h2>運営方針: 思想と技術の融合</h2>
-      <p>
-        当団体は「政治思想 × IT」を理念に掲げ、技術的アプローチを通じて透明性と健全な議論の場を構築します。
-      </p>
+      <h2>このフォーラムで大切にしていること</h2>
       <ul>
-        <li><strong>Gitによるコンテンツ管理</strong>: 全ての寄稿や変更はGitHub上で管理されます。誰が、いつ、何を、なぜ変更したのかを追跡でき、透明性を担保します。</li>
-        <li><strong>静的サイトの採用</strong>: データベースを持たない静的サイトとして構築されています。これにより、セキュリティリスクを低減し、高速な表示と安定した運用を実現します。</li>
-        <li><strong>GitHub Issuesをフォーラムとして活用</strong>: サイトに関する議論や提案は、公開された<a href="https://github.com/fuyukihatune-rgb/ESX-hugo/issues">GitHub Issues</a>で行います。これは私たちのオープンなフォーラムです。</li>
+        <li><strong>オープンな編集プロセス</strong> — すべての記事や改善提案は GitHub 上で公開され、誰でも経緯を追えます。</li>
+        <li><strong>バイアスの少ない表現</strong> — 特定の政治的立場に依存せず、事実と経験を中心に据えた投稿を目指します。</li>
+        <li><strong>コラボレーション</strong> — アイデアの下書きから翻訳、デザイン改善まで、得意分野を持ち寄ってください。</li>
+        <li><strong>アクセスのしやすさ</strong> — レスポンシブデザインと軽量な構成で、デバイスを問わず快適に閲覧できます。</li>
       </ul>
       <p>
-        私たちの活動への参加や寄稿に、特別な技術スキルは必要ありません。詳細は<a href="https://github.com/fuyukihatune-rgb/ESX-hugo">プロジェクトページ</a>をご覧ください。
+        特別なスキルは必要ありません。執筆、校正、フィードバックのいずれでも参加できます。
       </p>
     </section>
     <section class="card">
-      <h2>基本原理</h2>
+      <h2>コミュニティガイドライン</h2>
       <ul>
-        <li><strong>自由の尊重</strong> — 誰もが自分の考えを落ち着いて表明できる環境を守ります。</li>
-        <li><strong>責任ある自由</strong> — 他者の権利を侵さず、自由と責任の両立を目指します。</li>
-        <li><strong>透明性</strong> — 発言や編集の経緯を記録し、検証可能性を高めます。</li>
-        <li><strong>健全な議論</strong> — 感情的な煽動ではなく、事実と論理に基づく対話を重視します。</li>
-        <li><strong>法の遵守</strong> — 公開の議論で必要な改善を提案します。</li>
-        <li><strong>プライバシーの尊重</strong> — 憲法上の表現・通信の自由に立脚し、安全技術（VPN / Tor 等）の活用を認めます。</li>
+        <li><strong>敬意を払う</strong> — 立場の違いを尊重し、個人攻撃をしないでください。</li>
+        <li><strong>透明性</strong> — 情報源や前提条件を開示し、検証可能な形で共有します。</li>
+        <li><strong>建設的なフィードバック</strong> — 批判ではなく改善提案を意識し、次のアクションにつながるコメントを。</li>
+        <li><strong>安全とプライバシー</strong> — 個人情報を扱う際は十分に配慮し、公開範囲を意識してください。</li>
       </ul>
-      <blockquote class="quote">
-        <p>「異議申し立てのプロセスこそが、民主主義の正当性を支える。」</p>
-        <cite>— Robert A. Dahl</cite>
-      </blockquote>
+      <p>
+        詳細は <a href="{{ relLangURL "contribution-guide/" }}">貢献ガイド</a> をご確認ください。
+      </p>
     </section>
 
     {{/* 最新の投稿一覧を表示 */}}
@@ -57,13 +102,9 @@
     </section>
 
     <section class="card">
-      <h2>支援（任意）</h2>
-      <p>本サイトは <strong>政治団体ではありません</strong>。活動は皆さまのご支援により成り立っています。</p>
-      <p>代表: <strong>@ncc1030</strong></p>
-      <div class="address-box">
-        <label>Bitcoin (BTC)</label>
-        <code class="addr">3LMiALLtbygKqzdHCgfgq8UmQVAsvmiPvN</code>
-      </div>
+      <h2>コミュニティを支える</h2>
+      <p>このフォーラムはコミュニティベースで運営されています。寄稿・レビュー・翻訳・デザイン改善など、時間と知識の共有が最大のサポートです。</p>
+      <p>もし運営費の支援に興味があれば、代表 <strong>@ncc1030</strong> までお問い合わせください。暗号資産での支援は以下のアドレスで受け付けています。</p>
       <div class="address-box">
         <label>Ethereum (ETH)</label>
         <code class="addr">0x30ADadB8551CF95267Eff67988916C11DF431bF2</code>

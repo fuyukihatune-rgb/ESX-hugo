@@ -6,4 +6,13 @@
     </svg>
     共有
   </button>
+  {{ $discussionsURL := .Site.Params.discussions_url | default "https://github.com/fuyukihatune-rgb/ESX-hugo/discussions" }}
+  {{ if $discussionsURL }}
+  <button class="share-btn discussion-btn" type="button" data-discussions-url="{{ $discussionsURL }}" data-title="{{ .Title }}" data-url="{{ .Permalink }}" aria-label="GitHub Discussions で議論する">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+      <path d="M8 0a8 8 0 1 0 3.313 15.312c.208.12.445.188.687.188.772 0 1.4-.625 1.4-1.4 0-.242-.067-.478-.187-.687A8 8 0 0 0 8 0zm3.5 8a.75.75 0 0 1-1.5 0 .75.75 0 0 1 1.5 0zm-3.5.75A.75.75 0 1 1 8 8a.75.75 0 0 1 0 1.5zM5.5 8a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0z"/>
+    </svg>
+    Discussions で話す
+  </button>
+  {{ end }}
 </div>

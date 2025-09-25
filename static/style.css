@@ -160,24 +160,70 @@ table th {
 
 .copy-code-btn {
   position: absolute;
-  top: 0.65rem;
-  right: 0.65rem;
-  padding: 0.35rem 0.75rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--heading-color);
-  background: rgba(37, 99, 235, 0.18);
-  border: 1px solid rgba(37, 99, 235, 0.35);
-  border-radius: 999px;
+  top: 0.55rem;
+  right: 0.55rem;
+  padding: 0.35rem 0.6rem;
+  background: rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--heading-color);
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
 }
 
-.copy-code-btn:hover,
+body.dark-mode .copy-code-btn {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.copy-code-btn:hover {
+  transform: translateY(-1px);
+  border-color: rgba(37, 99, 235, 0.4);
+  color: var(--accent-color-start);
+}
+
 .copy-code-btn.copied {
-  background: var(--accent-grad);
-  border-color: transparent;
-  color: #fff;
+  background: rgba(37, 99, 235, 0.12);
+  border-color: rgba(37, 99, 235, 0.4);
+  color: var(--accent-color-start);
+}
+
+.copy-code-btn.error {
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+}
+
+.copy-code-btn.error .copy-label {
+  color: #ef4444;
+}
+
+.copy-inner {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.copy-icon {
+  width: 16px;
+  height: 16px;
+}
+
+.copy-icon--check {
+  display: none;
+}
+
+.copy-code-btn.copied .copy-icon--copy {
+  display: none;
+}
+
+.copy-code-btn.copied .copy-icon--check {
+  display: block;
 }
 
 /* === ヘッダー & フッター === */
@@ -296,6 +342,67 @@ body.dark-mode .site-header {
   padding: 2rem 2.5rem;
 }
 
+.share-buttons {
+  margin-top: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1rem 1.25rem;
+  background-color: color-mix(in srgb, var(--card-bg-color) 90%, var(--bg-color) 10%);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+}
+
+.share-title {
+  margin: 0;
+  font-size: 1rem;
+  color: var(--heading-color);
+  font-weight: 600;
+}
+
+.share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(37, 99, 235, 0.28);
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--accent-color-start);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+.share-btn.discussion-btn {
+  border-color: rgba(124, 58, 237, 0.28);
+  background: rgba(124, 58, 237, 0.12);
+  color: #7c3aed;
+}
+.share-btn.discussion-btn:hover {
+  background: linear-gradient(90deg, #7c3aed, #2563eb);
+  color: #fff;
+  border-color: transparent;
+}
+
+.share-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.share-btn:hover {
+  transform: translateY(-1px);
+  background: var(--accent-grad);
+  border-color: transparent;
+  color: #fff;
+}
+
+body.dark-mode .share-btn {
+  background: rgba(48, 129, 247, 0.16);
+  border-color: rgba(48, 129, 247, 0.36);
+}
+
 .article-header {
   margin-bottom: 2.5rem;
   border-bottom: 1px solid var(--border-color);
@@ -306,11 +413,16 @@ body.dark-mode .site-header {
   font-size: 2.5rem;
 }
 .article-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.4rem;
   color: var(--quote-color);
-  font-size: 0.9rem;
+  font-size: 0.95rem;
 }
-.article-meta span {
-  margin: 0 0.5rem;
+.article-author {
+  color: var(--heading-color);
+  font-weight: 600;
 }
 
 .article-sidebar {
@@ -458,6 +570,96 @@ body.dark-mode .site-header {
   text-align: center;
   color: var(--quote-color);
 }
+.hero-actions {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: #fff;
+  background: var(--accent-grad);
+  border: none;
+  box-shadow: 0 12px 25px -18px var(--shadow-color);
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+.cta-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+.cta-button.secondary {
+  background: transparent;
+  color: var(--accent-color-start);
+  border: 1px solid rgba(37, 99, 235, 0.35);
+}
+.cta-button.secondary:hover {
+  background: rgba(37, 99, 235, 0.1);
+}
+
+.taxonomy-card {
+  margin-top: 2.5rem;
+}
+.taxonomy-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+}
+.taxonomy-block h2 {
+  margin-top: 0;
+  font-size: 1.35rem;
+}
+.taxonomy-text {
+  margin: 0.35rem 0 1.25rem;
+  color: var(--quote-color);
+  font-size: 0.95rem;
+}
+.pill-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.95rem;
+  border-radius: 999px;
+  background: rgba(37, 99, 235, 0.12);
+  border: 1px solid rgba(37, 99, 235, 0.28);
+  color: var(--accent-color-start);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.pill:hover {
+  transform: translateY(-1px);
+  background: var(--accent-grad);
+  color: #fff;
+  border-color: transparent;
+}
+.pill.secondary {
+  background: rgba(124, 58, 237, 0.12);
+  border: 1px solid rgba(124, 58, 237, 0.28);
+}
+.pill.secondary:hover {
+  background: linear-gradient(90deg, #7c3aed, #2563eb);
+}
+.pill-count {
+  font-size: 0.75rem;
+  background: rgba(255, 255, 255, 0.22);
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  color: inherit;
+}
 .latest-posts {
   padding-top: 2rem;
   padding-bottom: 2rem;
@@ -491,8 +693,20 @@ body.dark-mode .site-header {
   font-size: 0.9rem;
 }
 .post-card .post-meta {
-  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
   color: var(--quote-color);
+}
+.post-card .post-author {
+  color: var(--heading-color);
+  font-weight: 600;
+}
+.meta-separator {
+  color: var(--quote-color);
+  display: inline-flex;
+  align-items: center;
 }
 .no-results {
   grid-column: 1 / -1; /* グリッドの全幅を占める */

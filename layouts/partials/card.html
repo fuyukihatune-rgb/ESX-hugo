@@ -6,6 +6,22 @@
   <article>
     <h3>{{ .Title }}</h3>
     <p>{{ .Summary | truncate 70 }}</p>
-    <div class="post-meta"><time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006-01-02" }}</time></div>
+    {{ $authors := .Param "author" }}
+    {{ $authorList := slice }}
+    {{ if $authors }}
+      {{ $type := printf "%T" $authors }}
+      {{ if hasPrefix $type "[]" }}
+        {{ $authorList = $authors }}
+      {{ else }}
+        {{ $authorList = slice $authors }}
+      {{ end }}
+    {{ end }}
+    <div class="post-meta">
+      <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006-01-02" }}</time>
+      {{ if gt (len $authorList) 0 }}
+        <span class="meta-separator">&middot;</span>
+        <span class="post-author">{{ delimit $authorList ", " }}</span>
+      {{ end }}
+    </div>
   </article>
 </a>

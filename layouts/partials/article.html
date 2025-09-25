@@ -7,10 +7,27 @@
     <header class="article-header">
       <h1>{{ .Title }}</h1>
       <div class="article-meta">
-        {{ if not .Date.IsZero }}
-        <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006年1月2日" }}</time>
+        {{ $authors := .Param "author" }}
+        {{ $authorList := slice }}
+        {{ $hasMeta := false }}
+        {{ if $authors }}
+          {{ $type := printf "%T" $authors }}
+          {{ if hasPrefix $type "[]" }}
+            {{ $authorList = $authors }}
+          {{ else }}
+            {{ $authorList = slice $authors }}
+          {{ end }}
+          {{ if gt (len $authorList) 0 }}
+            <span class="article-author">{{ delimit $authorList ", " }}</span>
+            {{ $hasMeta = true }}
+          {{ end }}
         {{ end }}
-        <span>&middot;</span>
+        {{ if not .Date.IsZero }}
+          {{ if $hasMeta }}<span class="meta-separator">&middot;</span>{{ end }}
+          <time datetime="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">{{ .Date.Format "2006年1月2日" }}</time>
+          {{ $hasMeta = true }}
+        {{ end }}
+        {{ if $hasMeta }}<span class="meta-separator">&middot;</span>{{ end }}
         <span>約{{ .ReadingTime }}分で読めます</span>
       </div>
     </header>

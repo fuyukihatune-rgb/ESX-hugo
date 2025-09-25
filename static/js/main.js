@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // --- Copy to Clipboard Functionality (Crypto Addresses) --- 
+// --- Copy to Clipboard Functionality (Crypto Addresses) --- 
   document.querySelectorAll('.copy-btn').forEach(button => {
     button.addEventListener('click', function() {
       const addrCode = this.previousElementSibling;
@@ -143,25 +143,40 @@ document.addEventListener('DOMContentLoaded', () => {
       const copyButton = document.createElement('button');
       copyButton.type = 'button';
       copyButton.className = 'copy-code-btn';
-      copyButton.setAttribute('aria-label', 'コードをコピー');
-      copyButton.textContent = 'コピー';
+      copyButton.setAttribute('aria-label', 'Copy code');
+      copyButton.innerHTML = `
+        <span class="copy-inner">
+          <svg class="copy-icon copy-icon--copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="9" y="2" width="6" height="4" rx="1" ry="1"></rect>
+            <path d="M16 4h1.5A1.5 1.5 0 0 1 19 5.5v14A1.5 1.5 0 0 1 17.5 21h-11A1.5 1.5 0 0 1 5 19.5v-14A1.5 1.5 0 0 1 6.5 4H8"></path>
+          </svg>
+          <svg class="copy-icon copy-icon--check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="5 13 9 17 19 7"></polyline>
+          </svg>
+          <span class="copy-label">Copy</span>
+        </span>
+      `;
+      const copyLabel = copyButton.querySelector('.copy-label');
 
       copyButton.addEventListener('click', () => {
         const text = codeBlock.innerText;
         navigator.clipboard.writeText(text).then(() => {
-          const original = copyButton.textContent;
-          copyButton.textContent = 'コピー済み';
+          copyButton.classList.remove('error');
           copyButton.classList.add('copied');
+          copyLabel.textContent = 'Copied!';
           setTimeout(() => {
-            copyButton.textContent = original;
+            copyLabel.textContent = 'Copy';
             copyButton.classList.remove('copied');
-          }, 2000);
+          }, 1600);
         }).catch(err => {
           console.error('Failed to copy code block:', err);
-          copyButton.textContent = '失敗';
+          copyButton.classList.remove('copied');
+          copyButton.classList.add('error');
+          copyLabel.textContent = 'Failed';
           setTimeout(() => {
-            copyButton.textContent = 'コピー';
-          }, 2000);
+            copyLabel.textContent = 'Copy';
+            copyButton.classList.remove('error');
+          }, 1600);
         });
       });
 
@@ -261,6 +276,21 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
         event.stopPropagation();
       }
+    });
+  });
+
+  // --- GitHub Discussions Shortcut ---
+  document.querySelectorAll('.discussion-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const base = btn.dataset.discussionsUrl || '';
+      const title = encodeURIComponent(`[Discussion] ${btn.dataset.title || ''}`);
+      const body = encodeURIComponent(`この記事について意見交換しましょう。\n\n${btn.dataset.url || window.location.href}`);
+      let target = base;
+      if (base.includes('/discussions/new')) {
+        const separator = base.includes('?') ? '&' : '?';
+        target = `${base}${separator}title=${title}&body=${body}`;
+      }
+      window.open(target, '_blank', 'noopener');
     });
   });
 

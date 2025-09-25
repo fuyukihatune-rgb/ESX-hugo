@@ -67,6 +67,13 @@ CI は導入していませんが、Pull Request がマージされる前に Clo
 
 ## デプロイフロー
 
+## 管理者の開発環境
+
+- OS: Windows 11 Pro + WSL2 (Ubuntu)
+- エディタ: Visual Studio Code、Neovim
+- ブラウザ: Firefox / Chrome
+- その他: Node.js 18.x、npm 10.x
+
 - ホスティング: Cloudflare Pages
 - Production branch: `main`
 - Build command: `hugo --minify`
