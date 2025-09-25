@@ -3,48 +3,43 @@ document.addEventListener('DOMContentLoaded', () => {
   const darkModeToggle = document.getElementById('dark-mode-toggle');
   if (darkModeToggle) {
     const body = document.body;
-    const moonIcon = darkModeToggle.querySelector('.moon-icon');
-    const sunIcon = darkModeToggle.querySelector('.sun-icon');
 
     const applyTheme = (theme) => {
       if (theme === 'dark') {
         body.classList.add('dark-mode');
-        if (moonIcon) moonIcon.style.display = 'none';
-        if (sunIcon) sunIcon.style.display = 'inline-block';
+        body.classList.remove('light-mode');
       } else {
+        body.classList.add('light-mode');
         body.classList.remove('dark-mode');
-        if (moonIcon) moonIcon.style.display = 'inline-block';
-        if (sunIcon) sunIcon.style.display = 'none';
       }
     };
 
     const savedTheme = localStorage.getItem('theme');
-    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const mediaQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: dark)') : null;
+    const prefersDark = mediaQuery ? mediaQuery.matches : false;
 
-    let currentTheme = 'light';
-    if (savedTheme) {
-      currentTheme = savedTheme;
-    } else if (prefersDark) {
-      currentTheme = 'dark';
-    }
-    applyTheme(currentTheme);
+    const initialTheme = savedTheme || (prefersDark ? 'dark' : 'light');
+    applyTheme(initialTheme);
 
     darkModeToggle.addEventListener('click', () => {
-      if (body.classList.contains('dark-mode')) {
-        applyTheme('light');
-        localStorage.setItem('theme', 'light');
-      } else {
-        applyTheme('dark');
-        localStorage.setItem('theme', 'dark');
-      }
+      const nextTheme = body.classList.contains('dark-mode') ? 'light' : 'dark';
+      applyTheme(nextTheme);
+      localStorage.setItem('theme', nextTheme);
     });
 
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', e => {
-      if (!localStorage.getItem('theme')) {
-        const newTheme = e.matches ? 'dark' : 'light';
-        applyTheme(newTheme);
-      }
-    });
+    if (mediaQuery && mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', event => {
+        if (!localStorage.getItem('theme')) {
+          applyTheme(event.matches ? 'dark' : 'light');
+        }
+      });
+    } else if (mediaQuery && mediaQuery.addListener) {
+      mediaQuery.addListener(event => {
+        if (!localStorage.getItem('theme')) {
+          applyTheme(event.matches ? 'dark' : 'light');
+        }
+      });
+    }
   } else {
     console.warn('Dark mode toggle button not found.');
   }
@@ -134,6 +129,47 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+
+  // --- Copy Button for Code Blocks ---
+  const enhanceCodeBlocks = () => {
+    const codeBlocks = document.querySelectorAll('pre > code');
+    codeBlocks.forEach(codeBlock => {
+      const pre = codeBlock.parentElement;
+      if (pre.classList.contains('code-block-enhanced')) {
+        return;
+      }
+
+      pre.classList.add('code-block-enhanced');
+      const copyButton = document.createElement('button');
+      copyButton.type = 'button';
+      copyButton.className = 'copy-code-btn';
+      copyButton.setAttribute('aria-label', 'コードをコピー');
+      copyButton.textContent = 'コピー';
+
+      copyButton.addEventListener('click', () => {
+        const text = codeBlock.innerText;
+        navigator.clipboard.writeText(text).then(() => {
+          const original = copyButton.textContent;
+          copyButton.textContent = 'コピー済み';
+          copyButton.classList.add('copied');
+          setTimeout(() => {
+            copyButton.textContent = original;
+            copyButton.classList.remove('copied');
+          }, 2000);
+        }).catch(err => {
+          console.error('Failed to copy code block:', err);
+          copyButton.textContent = '失敗';
+          setTimeout(() => {
+            copyButton.textContent = 'コピー';
+          }, 2000);
+        });
+      });
+
+      pre.appendChild(copyButton);
+    });
+  };
+
+  enhanceCodeBlocks();
 
   // --- Copy to Clipboard Functionality (Post Share Link) --- 
   // Assuming there might be a .copy-link-btn for sharing post links
