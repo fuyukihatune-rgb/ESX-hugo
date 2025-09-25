@@ -3,11 +3,11 @@
     このページが "posts" セクション（つまり記事）であれば、
     記事用の2カラムレイアウト `article.html` を読み込む。
     それ以外のページ（貢献ガイドなど）は、シンプルな1カラムレイアウト
-    `_default-main.html` を読み込む。
+    `default-main.html` を読み込む。
   */}}
   {{ if eq .Type "posts" }}
     {{ partial "article.html" . }}
   {{ else }}
-    {{ partial "_default-main.html" . }}
+    {{ partial "default-main.html" . }}
   {{ end }}
 {{ end }}
