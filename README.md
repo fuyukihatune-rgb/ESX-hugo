@@ -1,6 +1,7 @@
 # Empowerment Society X (ESX) 公式サイト
 
 このリポジトリは、言論プラットフォーム「Empowerment Society X」の公式サイトを生成する Hugo プロジェクトです。Cloudflare Pages 上でホストされ、寄稿フォームからの投稿は Cloudflare Worker を経由して GitHub リポジトリに Pull Request として登録されます。
+https://esx.xdcyw.net/にて公開されています。
 
 ## プロジェクトのゴール
 
